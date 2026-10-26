@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src 'none'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self'; worker-src blob:;">
+  <meta name="description" content="小鳩になって、山頂の雲海を見渡す約90秒。KOBATO BOOKSのPC最小試作。">
+  <title>小鳩の山頂席｜KOBATO BOOKS PC試作</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="vendor/aframe-1.8.0.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <main id="experience" aria-label="小鳩の山頂席、3Dの景色">
+    <template id="scene-template"><a-scene embedded renderer="antialias: true; colorManagement: true; precision: mediump" xr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false" loading-screen="enabled: false" background="color: #9baebc">
+      <a-entity id="world"></a-entity>
+      <a-entity id="seat" position="0 0 0">
+        <a-entity id="view" camera="fov: 67; near: 0.08; far: 1100" position="0 1.6 0" rotation="-5 0 0" look-controls="enabled: false" wasd-controls="enabled: false"></a-entity>
+      </a-entity>
+    </a-scene></template>
+  </main>
+
+  <header class="masthead">
+    <div class="identity"><svg viewBox="0 0 32 24" aria-hidden="true"><path d="M2 4c6 1 9 5 13 9C18 6 24 3 31 3c-2 4-5 7-9 10l4 7-8-3-5 4-2-8C7 12 4 9 2 4Z" fill="currentColor"/></svg><span>KOBATO BOOKS</span></div>
+    <span class="edition" id="edition">PC最小試作 <span class="dot"></span> 01</span>
+  </header>
+
+  <section id="welcome" class="overlay" aria-labelledby="welcome-title">
+    <div class="intro sheet">
+      <p class="eyebrow">椅子ひとつから、別の身体の旅へ。</p>
+      <h1 id="welcome-title">小鳩の<span>山頂席</span></h1>
+      <p class="lead">今日は、小鳩の席を用意しました。<br>雲の上で、ひとつだけ羽ばたいてみませんか。</p>
+      <div class="intro-steps"><p><b>01</b> ドラッグして、見回す</p><p><b>02</b> クリックして、羽ばたく</p><p><b>03</b> 風鈴の音に、耳をすます</p></div>
+      <button id="start" class="primary" disabled>景色を準備しています…</button>
+      <p class="small">約90秒・座ったまま・移動なし<br>音は小さめから。途中でいつでも終了できます。</p>
+      <p class="prototype-note">これはPC画面で構成と操作を確かめる試作です。<br>VR機器の立体感・身体感覚・酔いは未検証です。</p>
+    </div>
+  </section>
+
+  <section id="hud" hidden aria-label="体験中の操作">
+    <div class="chapter"><p id="chapter-number" class="eyebrow">01 / 山頂の席</p><h2 id="chapter-title">雲海を、見回してみよう。</h2><p id="chapter-hint">景色をドラッグすると、視線を動かせます。</p></div>
+    <div id="response" class="response" role="status" aria-live="polite"></div>
+    <div class="controlbar">
+      <div class="time"><span id="remaining">90</span><span>秒</span><div class="track"><div id="progress"></div></div></div>
+      <button id="flap" class="primary">羽ばたく <span>Space</span></button>
+      <button id="recenter" class="secondary">正面へ</button>
+      <button id="mute" class="secondary" aria-pressed="false">音：オン</button>
+      <button id="stop" class="secondary stop">終了 <span>Esc</span></button>
+    </div>
+    <p class="key-guide">ドラッグ / 矢印キーで見回す　・　景色をクリック / Spaceで羽ばたく</p>
+    <p id="paused" class="paused" hidden>一時停止中です。画面に戻ると続きます。</p>
+  </section>
+
+  <section id="ending" class="overlay" hidden aria-labelledby="end-title">
+    <div class="outro sheet">
+      <p class="eyebrow">小さな旅の、帰り道。</p><h2 id="end-title">おかえりなさい。</h2>
+      <p id="end-message" class="lead">小鳩の席は、どうでしたか。</p>
+      <p id="session-summary" class="session-summary"></p>
+      <label for="impression">何をした感じが、残っていますか？<span>任意のメモ。送信・自動保存はしません。</span></label>
+      <textarea id="impression" rows="3" placeholder="例：自分の翼が動いた感じ／景色を見るだけでよかった／操作が分かりづらかった"></textarea>
+      <div class="outro-actions"><button id="restart" class="primary">もう一度、席へ</button><button id="download" class="secondary">記録を手元に保存</button></div>
+      <p class="small">PCでの反応を見る試作です。需要やVRの効果を確認したものではありません。<br>立体感・実機入力・快適性の検証は、次の判断後に行います。</p>
+    </div>
+  </section>
+
+  <section id="failure" class="overlay" hidden role="alert"><div class="sheet"><p class="eyebrow">PCの動作確認</p><h2>3Dを表示できませんでした。</h2><p id="failure-message">Chrome / Edgeの最新版を試し、ブラウザのグラフィックアクセラレーション設定をご確認ください。</p><p>このPCの表示環境による可能性があります。内容が体験できなかったことだけ、ボスの記録に残してください。</p></div></section>
+  <noscript>この試作にはJavaScriptが必要です。ブラウザの設定をご確認ください。</noscript>
+</body>
+</html>
